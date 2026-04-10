@@ -1,0 +1,244 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0b1a3e 0%, #132b5e 40%, #1a3a7a 100%);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.calculator {
+  width: 340px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1b2e5c 0%, #152347 100%);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(30, 80, 180, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---- Display ---- */
+
+.display {
+  padding: 28px 24px 20px;
+  text-align: right;
+  background: linear-gradient(180deg, rgba(10, 20, 50, 0.6) 0%, rgba(15, 30, 65, 0.3) 100%);
+  border-bottom: 1px solid rgba(80, 140, 255, 0.1);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.display-expression {
+  font-size: 14px;
+  color: rgba(160, 190, 255, 0.55);
+  min-height: 20px;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.display-value {
+  font-size: 42px;
+  font-weight: 300;
+  color: #e8f0ff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: font-size 0.15s ease;
+}
+
+.display-value.shrink {
+  font-size: 28px;
+}
+
+/* ---- Button grid ---- */
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  padding: 8px;
+  gap: 8px;
+}
+
+.btn {
+  height: 62px;
+  border: none;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Number buttons */
+.btn.num {
+  background: linear-gradient(180deg, #1f3564 0%, #182c52 100%);
+  color: #d4e2ff;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.btn.num:hover {
+  background: linear-gradient(180deg, #274070 0%, #1e3460 100%);
+  color: #ffffff;
+}
+
+.btn.num:active {
+  background: #142545;
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+/* Operator buttons */
+.btn.op {
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 22px;
+  box-shadow:
+    0 2px 8px rgba(37, 99, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.btn.op:hover {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow:
+    0 4px 16px rgba(37, 99, 235, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn.op:active {
+  background: #1e40af;
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+.btn.op.active {
+  background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+  box-shadow:
+    0 0 20px rgba(96, 165, 250, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Equals */
+.btn.equals {
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  font-size: 24px;
+}
+
+.btn.equals:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  box-shadow:
+    0 4px 20px rgba(59, 130, 246, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Function buttons */
+.btn.fn {
+  background: linear-gradient(180deg, #1a2d54 0%, #142243 100%);
+  color: #7db4ff;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.btn.fn:hover {
+  background: linear-gradient(180deg, #213760 0%, #1a2d54 100%);
+  color: #a0c8ff;
+}
+
+.btn.fn:active {
+  background: #101d38;
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+/* Zero spans 2 columns — but we reorder bottom row */
+.btn.zero {
+  grid-column: span 1;
+}
+
+/* Bottom row reorder: 0 | . | = | backspace */
+/* Grid auto-places them, layout is correct from HTML order */
+
+/* Delete button */
+.btn.del {
+  font-size: 18px;
+}
+
+/* ---- Ripple effect ---- */
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.btn:active::after {
+  width: 150px;
+  height: 150px;
+  opacity: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 400px) {
+  .calculator {
+    width: 100vw;
+    border-radius: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .display {
+    flex: 1;
+    padding: 40px 20px 20px;
+  }
+
+  .buttons {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .btn {
+    height: 56px;
+    border-radius: 12px;
+    font-size: 18px;
+  }
+
+  .display-value {
+    font-size: 36px;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 600px) {
+  .calculator {
+    width: 320px;
+  }
+}
